@@ -4,7 +4,7 @@
 
 ## Demo
 
-> (YouTube 시연 영상)
+\-▶ Demo Video)(https://youtu.be/N3hU5rFb31I?si=Ayiu-H0NHnc_HXUg)
 
 ## 목차
 
