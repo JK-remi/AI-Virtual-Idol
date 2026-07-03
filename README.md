@@ -60,8 +60,6 @@
 ```mermaid
 flowchart LR
 
-    User["User"]
-
     Camera["Camera"]
     Microphone["Microphone"]
     YouTube["YouTube Live Chat API"]
@@ -74,20 +72,20 @@ flowchart LR
 
     Unity["Unity"]
 
-    Avatar["Virtual Avatar"]
-
-    User --> Camera
-    User --> Microphone
+    Avatar["Avatar"]
 
     Camera --> Python
     Python --> Unity
 
     Microphone --> STT
     STT --> LLM
-    LLM --> TTS
-    TTS --> Unity
+    STT --> TTS
 
-    YouTube --> Unity
+    YouTube --> LLM
+
+    LLM --> TTS
+
+    TTS --> Unity
 
     Unity --> Avatar
 ```
