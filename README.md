@@ -57,8 +57,40 @@
 ---
 
 ## 시스템 아키텍처
+```mermaid
+flowchart LR
 
-(작성 예정)
+    User["User"]
+
+    Camera["Camera"]
+    Microphone["Microphone"]
+    YouTube["YouTube Live Chat API"]
+
+    Python["Python + MediaPipe"]
+
+    STT["Azure Speech (STT)"]
+    LLM["Azure OpenAI"]
+    TTS["Azure Speech (TTS)"]
+
+    Unity["Unity"]
+
+    Avatar["Virtual Avatar"]
+
+    User --> Camera
+    User --> Microphone
+
+    Camera --> Python
+    Python --> Unity
+
+    Microphone --> STT
+    STT --> LLM
+    LLM --> TTS
+    TTS --> Unity
+
+    YouTube --> Unity
+
+    Unity --> Avatar
+```
 
 ---
 
