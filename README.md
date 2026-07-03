@@ -89,6 +89,7 @@ flowchart LR
 
     Unity --> Avatar
 ```
+AI-Virtual-Idol은 MediaPipe 기반 실시간 모션 추적, Azure AI 음성 처리, YouTube Live Chat 연동을 하나의 Unity 애플리케이션으로 통합하여 구성했습니다.
 
 ---
 
