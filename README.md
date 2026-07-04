@@ -1,36 +1,44 @@
 # AI-Virtual-Idol
 
-> MediaPipe 기반 실시간 모션 추적과 Azure AI를 결합하여 사용자와 상호작용 가능한 AI 버추얼 캐릭터 플랫폼
+MediaPipe 기반 실시간 모션 추적과 Azure AI를 활용하여
+사용자가 자신만의 AI 버추얼 캐릭터를 생성하고,
+직접 대화하거나 버추얼 아이돌이 되어 실시간으로 소통할 수 있는 플랫폼
 
 ## 🎬 Demo
 
-\-▶ Demo Video)(https://youtu.be/N3hU5rFb31I?si=Ayiu-H0NHnc_HXUg)
+\-▶ Demo Video(https://youtu.be/N3hU5rFb31I?si=Ayiu-H0NHnc_HXUg)
 
 ## 목차
 
-- 프로젝트 소개
-- 프로젝트 개요
-- 시스템 아키텍처
-- 기술 스택
-- 주요 기능
-  - 실시간 모션 추적 및 아바타 모션 매핑(Avatar Motion Mapping)
-  - AI 음성 대화(STT/TTS)
-  - Azure OpenAI 기반 AI 캐릭터
-  - YouTube Live Chat 연동
-  - 버추얼 캐릭터 생성 및 적용
-- 기술적 문제 해결
-  - MediaPipe Landmark를 Unity Humanoid Bone으로 모션 매핑(Motion Mapping)
-  - BlendShape를 이용한 표정 구현
-  - Azure AI 서비스 통합
-- 프로젝트를 통해 배운 점
-- 아쉬웠던 점
-- 앞으로 개선하고 싶은 점
+- [프로젝트 소개](#프로젝트-소개)
+- [프로젝트 개요](#프로젝트-개요)
+- [시스템 아키텍처](#시스템-아키텍처)
+- [기술 스택](#기술-스택)
+- [주요 기능](#주요-기능)
+  - [1. 버추얼 캐릭터 커스터마이징](#1-버추얼-캐릭터-커스터마이징)
+  - [2. 실시간 모션 추적 및 모션 매핑 (Motion Mapping)](#2-실시간-모션-추적-및-모션-매핑motion-mapping)
+  - [3. AI Character Mode](#3-ai-character-mode)
+  - [4. Virtual Idol Mode](#4-virtual-idol-mode)
+- [기술적 문제 해결](#기술적-문제-해결)
+  - [1. MediaPipe 랜드마크를 Unity Avatar Motion으로 변환](#1-mediapipe-랜드마크를-unity-avatar-motion으로-변환)
+  - [2. System Prompt와 RAG를 활용한 캐릭터 일관성 유지](#2-system-prompt와-rag를-활용한-캐릭터-일관성-유지)
+- [회고](#회고)
 
 ---
 
 ## 프로젝트 소개
 
-(작성 예정)
+AI-Virtual-Idol은 사용자가 자신만의 AI 버추얼 캐릭터를 생성하여 직접 대화하거나, 동일한 캐릭터가 되어 버추얼 아이돌처럼 팬들과 소통할 수 있는 플랫폼입니다.
+
+MediaPipe 기반 실시간 모션 추적과 Azure OpenAI, Azure Speech(STT/TTS)를 활용하여 AI 캐릭터와의 자연스러운 상호작용을 구현했으며, Azure AI Search(RAG)와 Prompt Engineering을 통해 캐릭터의 성격과 세계관을 일관성 있게 유지하도록 설계했습니다.
+
+### 주요 특징
+
+- AI 캐릭터 생성 및 커스터마이징
+- AI Character Mode를 통한 자연스러운 대화
+- Virtual Idol Mode를 통한 실시간 방송
+- MediaPipe 기반 실시간 모션 매핑
+- Azure AI 기반 음성 및 LLM 연동
 
 ---
 
@@ -137,7 +145,7 @@ flowchart LR
   <img src="./images/avatar_setting.png" width="60%">
 </p>
 
-### 2. 실시간 모션 추적 및 모션 매핑(Motion Mapping)
+### 2. 실시간 모션 추적 및 모션 매핑 (Motion Mapping)
 
 MediaPipe를 활용하여 사용자의 전신, 손, 얼굴 랜드마크를 실시간으로 추출하고, Python에서 처리한 모션 데이터를 UDP 통신을 통해 Unity로 전달하여 Virtual Avatar에 적용합니다.
 
@@ -313,10 +321,16 @@ flowchart TD
 
 MediaPipe 기반 모션 매핑은 기본적인 움직임을 구현하는 데에는 성공했지만, 상용 서비스 수준의 자연스러운 품질에는 도달하지 못했습니다. 손목 회전이나 얼굴 표정은 비교적 안정적으로 구현되었지만, 일부 동작에서는 잔떨림(Jitter)과 부자연스러운 움직임이 발생했으며, 좌우 방향이 직관적으로 일치하지 않는 문제도 완전히 해결하지 못했습니다.
 
-또한 AI 응답의 일관성을 높이기 위해 Prompt Engineering과 RAG를 적용했지만, 캐릭터의 장기 기억이나 이전 대화 내용을 지속적으로 유지하는 기능까지는 구현하지 못한 점이 아쉬웠습니다.
+또한 AI 응답의 일관성을 높이기 위해 Prompt Engineering, Grounding Data, Azure AI Search(RAG)를 적용했지만, 캐릭터의 장기 기억이나 이전 대화 내용을 지속적으로 유지하는 기능까지는 구현하지 못한 점이 아쉬웠습니다.
 
 ### 앞으로 개선하고 싶은 점
 
 향후에는 IK(Inverse Kinematics)와 모션 보간(Smoothing)을 적용하여 보다 자연스러운 Avatar 움직임을 구현하고, 얼굴 표정과 음성의 감정을 함께 반영하는 기능을 추가하고 싶습니다.
+
+---
+
+## Contact
+- Email : 1abcm1@naver.com
+- GitHub: https://github.com/JK-remi
 
 또한 Character Memory를 도입하여 이전 대화 내용을 기억하는 장기 대화를 지원하고, 캐릭터 생성 기능도 외형, 성격, 음성을 보다 자유롭게 커스터마이징할 수 있도록 확장하여 실제 버추얼 아이돌 제작 플랫폼에 가까운 형태로 발전시키고 싶습니다.
