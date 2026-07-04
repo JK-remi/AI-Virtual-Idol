@@ -213,17 +213,51 @@ flowchart LR
 
 ## 기술적 문제 해결
 
-### 1. MediaPipe Landmark를 Unity Humanoid Bone으로 Motion Mapping
+### 1. MediaPipe 랜드마크를 Unity Avatar Motion으로 변환
 
-(작성 예정)
+#### 문제
 
-### 2. BlendShape를 이용한 표정 구현
+MediaPipe는 **Pose, Hands, Face** 랜드마크를 각각 독립적으로 제공하지만, Unity Avatar는 **Bone**과 **Blend Shape** 기반으로 동작하기 때문에 데이터를 그대로 적용할 수 없었습니다.
 
-(작성 예정)
+또한 MediaPipe와 Unity의 좌표계 차이로 인해 Avatar가 실제 움직임과 반대로 동작하거나, 손목 회전 및 일부 관절에서 잔떨림과 부자연스러운 움직임이 발생하는 문제가 있었습니다.
 
-### 3. Azure AI 서비스 통합
+#### 해결
 
-(작성 예정)
+Pose, Hands, Face 데이터를 각각 독립적으로 처리하고 별도의 UDP 포트를 통해 Unity로 전달하여 Avatar의 각 구성 요소를 개별적으로 제어했습니다.
+
+손목 회전은 손목, 검지, 중지 랜드마크를 이용하여 법선 벡터를 계산하고 `Quaternion.LookRotation()`을 통해 Bone Rotation으로 변환했습니다. 얼굴 표정은 MediaPipe가 제공하는 Blend Shape 값을 Unity의 **Skinned Mesh Renderer**와 매핑하여 Avatar의 표정에 적용했습니다.
+
+```mermaid
+flowchart LR
+
+    Camera --> MediaPipe
+
+    MediaPipe --> Pose
+    MediaPipe --> Hands
+    MediaPipe --> Face
+
+    Pose -->|"UDP"| Unity
+    Hands -->|"UDP"| Unity
+    Face -->|"UDP"| Unity
+
+    Unity --> Bone["Bone Mapping"]
+    Unity --> Blend["Blend Shape Mapping"]
+
+    Bone --> Avatar
+    Blend --> Avatar
+```
+
+<p align="center">
+    <img src="./images/mediapipe_landmark.png" width="48%">
+    &nbsp;
+    <img src="./images/motion_mapping.png" width="48%">
+</p>
+
+#### 결과
+
+MediaPipe의 랜드마크를 Unity Avatar Motion으로 변환하여 실시간 모션 매핑과 얼굴 표정 표현을 구현했습니다.
+
+다만 좌표계 차이와 Landmark 기반 추정의 한계로 인해 일부 관절에서 잔떨림과 방향 불일치가 발생했습니다. IK 적용과 회전 보정 등 다양한 방법으로 개선을 시도했지만 상용 서비스 수준의 자연스러운 Motion Quality에는 도달하지 못했으며, 이를 통해 실시간 Motion Mapping에서 좌표계와 Bone 구조를 함께 고려한 보정의 중요성을 확인할 수 있었습니다.
 
 ---
 
