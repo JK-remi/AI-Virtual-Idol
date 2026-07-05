@@ -1834,8 +1834,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf2aed4bc21086a4da8888cf056846e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  apiKey: AIzaSyASpLRFVN1dx_uACO039EQf6JTw44fd7BM
-  videoId: 80BCd_EKWm8
+  apiKey: 
+  videoId: 
   panelVideoID: {fileID: 1367013684778914657}
   txtName: {fileID: 5813264967242244559}
   txtMessage: {fileID: 2619883507832534322}
